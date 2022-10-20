@@ -9,5 +9,6 @@ namespace Core.Utilities.Results
     {
         bool Seccess { get; }
         string  Message { get; }
+        bool Success { get; set; }
     }
 }

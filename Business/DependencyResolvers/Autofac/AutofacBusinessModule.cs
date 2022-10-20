@@ -2,6 +2,7 @@
 using Autofac.Extras.DynamicProxy;
 using Business.Abtract;
 using Business.Concrete;
+using Business.CSS;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using DataAccess.Abtract;
@@ -18,6 +19,7 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance(); 
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+          
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
