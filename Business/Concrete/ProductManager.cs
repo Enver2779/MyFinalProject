@@ -1,4 +1,5 @@
 ﻿using Business.Abtract;
+using Business.BusinessAspects;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Validation;
@@ -23,6 +24,8 @@ namespace Business.Concrete
             _ProductDal = productDal;
             _categoryService = categoryService;
         }
+
+        [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
 
         public IResult Add(Product product)

@@ -30,5 +30,6 @@ namespace Core.Utilities.Results
         public bool Seccess { get; }
 
         public string Message { get; }
+        public bool Success { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }
