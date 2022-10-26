@@ -2,6 +2,9 @@
 using Business.BusinessAspects;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Caching;
+using Core.Aspects.Performance;
+using Core.Aspects.Transaction;
 using Core.Aspects.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
@@ -27,7 +30,7 @@ namespace Business.Concrete
 
         [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
-
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             //loglama kaydını tutmak
@@ -43,7 +46,7 @@ namespace Business.Concrete
                 
            
         }
-
+        [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 22)
@@ -57,7 +60,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Product>>(_ProductDal.GetAll(p => p.CategoryId == id));
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<Product> GetById(int productId)
         {
             return new SuccessDataResult<Product>(_ProductDal.Get(p => p.ProductId == productId));
@@ -72,7 +76,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<ProductDetailDto>>(_ProductDal.GetProductDetail());
         }
-
+        [CacheRemoveAspect("IProductService.Get")]
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(Product product)
         {
 
@@ -106,6 +111,11 @@ namespace Business.Concrete
             }
 
             return new SuccessResult();
+        }
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Product product)
+        {
+            throw new NotImplementedException();
         }
     }
 }
